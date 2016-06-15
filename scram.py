@@ -1,3 +1,5 @@
+#! /bin/env python
+
 import sys, os, random, re
 
 for x in sys.argv:
