@@ -9,11 +9,11 @@ ver = raw_input("What version (\'un\' for unscrambled)? ")
 
 pdir = 'mc'+ver.lower()
 
-go = raw_input("Go? ")
+go = (raw_input("Go? ")[0].lower() == 'y')
 
 
 
-if go[0].lower() == 'y':
+if go:
     try:
         os.mkdir(pdir)
     except:
