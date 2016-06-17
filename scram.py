@@ -2,14 +2,36 @@
 
 import sys, os, random, re
 
-for x in sys.argv:
-    print x
+import argparse
 
-ver = raw_input("What version (\'un\' for unscrambled)? ")
+argparser = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawTextHelpFormatter)
+# argparser.add_argument('--verbose',help='be verbose',
+#                     action='store_const',const=logging.INFO,dest='debug_level',
+#                     default=logging.WARNING)
+# argparser.add_argument('--debug',help='show debugging statements',
+#                     action='store_const',const=logging.DEBUG,dest='debug_level',
+#                     default=logging.WARNING)
+argparser.add_argument('file',metavar='filename', type=str, nargs='+',
+                    help='files to scramble')
+argparser.add_argument('-i','--interactive',help='interactive mode',
+                    action='store_true',dest='iact',default=False)
+argparser.add_argument('--save',help='actually produce output',
+                    action='store_true',dest='go')
+argparser.add_argument('--vers',help='what to call this version (default is \'un\'scrambled)',
+                    action='store',default='un')
+args = argparser.parse_args()
+
+print args
+
+if args.iact:
+    ver = raw_input("What version (\'un\' for unscrambled)? ")
+    go = (raw_input("Go? ")[0].lower() == 'y')
+else:
+    ver = args.vers
+    go = args.go
 
 pdir = 'mc'+ver.lower()
 
-go = (raw_input("Go? ")[0].lower() == 'y')
 
 
 
@@ -23,7 +45,7 @@ ans_key={}
 
 rr=[]
 
-for fin in sys.argv[1:]:
+for fin in args.file:
 
     try:
         ques = open(fin,'r')
@@ -48,8 +70,10 @@ for fin in sys.argv[1:]:
     ch = False
     choice=[]
 
-    if go[0].lower() == 'y':
+    if go:
         sys.stdout = open(pdir+'/'+qno+'.tex','w')
+
+# This can be chopped off into a question parser.
 
     for lx in linez:
         x=lx.strip()
@@ -86,14 +110,18 @@ for fin in sys.argv[1:]:
 
 print ans_key
 
-rr = range(1,len(sys.argv))
+rr = range(1,len(args.file)+1)
 
 if ver != 'un':
     random.shuffle(rr)
     random.shuffle(rr)
 
-ansfile = open(pdir+'/answer_key_'+ver,'w')
-mast = open(pdir+'/mcmaster.tex','w')
+if go:
+    ansfile = open(pdir+'/answer_key_'+ver,'w')
+    mast = open(pdir+'/mcmaster.tex','w')
+else:
+    ansfile = sys.stdout
+    mast = sys.stdout
 
 for n in rr:
     ansfile.write('%s\t%s\t%s\t%s\t%s\n' % tuple([n]+ans_key['mc%.2d'% (n,)]))
