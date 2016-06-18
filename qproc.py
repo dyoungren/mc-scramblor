@@ -1,4 +1,17 @@
-import re,sys
+import re,sys,random
+
+def sticky_shuffle(ll,st):
+    ll = list(ll)
+    st.sort()
+    hh = []
+    ct = 0
+    for x in st:
+        hh.append(ll.pop(x-ct))
+        ct += 1
+    random.shuffle(ll)
+    for x,y in zip(hh,st):
+        ll.insert(y,x)
+    return ll
 
 def qproc(fin,args,ans_key):
     try:
@@ -19,7 +32,7 @@ def qproc(fin,args,ans_key):
         cc = ques.readline()
 
 
-    beg = re.compile(r'^\\begin')
+    # beg = re.compile(r'^\\begin')
 
     ch = False
     choice=[]
@@ -31,9 +44,9 @@ def qproc(fin,args,ans_key):
 
     for lx in linez:
         x=lx.strip()
-        if re.search(r"^\s*\%",lx):
+        if re.search(r"^\s*\%",lx): # ignore comments
             pass
-        elif re.search(r"\\begin\{enumerate\}",lx):
+        elif re.search(r"\\begin\{enumerate\}",x):
             print x
             print '%%%%%%%%% Starting choices %%%%%%%%%%'
             ch=True
