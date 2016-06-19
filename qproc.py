@@ -1,6 +1,6 @@
-import re,sys
+import re,sys,random
 
-def qproc(fin,args,ans_key):
+def qproc(fin,args,ans_key,pdir='.'):
     try:
         ques = open(fin,'r')
     except IOError:
