@@ -48,7 +48,7 @@ ans_key={}
 # rr=[]
 
 for fin in args.file:
-    ans_key = qproc(fin,args,ans_key)
+    ans_key = qproc(fin,args,ans_key,pdir)
 
 print ans_key
 
@@ -66,7 +66,7 @@ else:
     mast = sys.stdout
 
 for n in rr:
-    ansfile.write('%s\t%s\t%s\t%s\t%s\n' % tuple([n]+ans_key['mc%.2d'% (n,)]))
+    ansfile.write('\t'.join([str(n)]+ans_key['mc%.2d'% (n,)])+'\n')
 
 ansfile.write('\n\n')
 

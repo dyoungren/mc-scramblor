@@ -13,7 +13,7 @@ def sticky_shuffle(ll,st):
         ll.insert(y,x)
     return ll
 
-def qproc(fin,args,ans_key):
+def qproc(fin,args,ans_key,pdir='.'):
     try:
         ques = open(fin,'r')
     except IOError:
@@ -71,4 +71,10 @@ def qproc(fin,args,ans_key):
 
                     # ans_key[qno] = ['ABCDE'[xx] for xx in chran]
 
+    aout = ['']*len(ans)
+    for k,v in enumerate(ans):
+        aout[v] = a2z[k]
+    
+    ans_key[qno] = aout
     return ans_key
+
