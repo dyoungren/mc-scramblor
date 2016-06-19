@@ -1,5 +1,18 @@
 import re,sys,random
 
+def sticky_shuffle(ll,st):
+    ll = list(ll)
+    st.sort()
+    hh = []
+    ct = 0
+    for x in st:
+        hh.append(ll.pop(x-ct))
+        ct += 1
+    random.shuffle(ll)
+    for x,y in zip(hh,st):
+        ll.insert(y,x)
+    return ll
+
 def qproc(fin,args,ans_key,pdir='.'):
     try:
         ques = open(fin,'r')
@@ -7,58 +20,61 @@ def qproc(fin,args,ans_key,pdir='.'):
         print "File %s not found." % (fin,)
         sys.exit()
 
-    linez = []
-
     qno = ''.join(ques.name.split('.')[:-1]).split('/')[-1]
+
+    a2z = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     # rr.append(qno)
 
-    cc = ques.readline()
-
-    while cc:
-        linez.append(cc)
-        cc = ques.readline()
-
-
-    beg = re.compile(r'^\\begin')
-
-    ch = False
-    choice=[]
-
     if args.go:
-        sys.stdout = open(pdir+'/'+qno+'.tex','w')
+        fout = open(pdir+'/'+qno+'.tex','w')
+    else:
+        fout = sys.stdout
 
-    # This can be chopped off into a question parser.
 
-    for lx in linez:
-        x=lx.strip()
-        if re.search(r"^\s*\%",lx):
-            pass
-        elif re.search(r"\\begin\{enumerate\}",lx):
-            print x
-            print '%%%%%%%%% Starting choices %%%%%%%%%%'
-            ch=True
-        elif ch and (re.search(r"\\end\{enumerate\}",lx) or re.search(r"None",lx) or re.search(r"All",lx)):
-            chran = range(4)
-            if args.vers != 'un':
-                random.shuffle(chran)
-                random.shuffle(chran)
-            for j in range(4):
-                cc= choice[chran.index(j)]
-            # for n,cc in enumerate(choice):
-                print cc
-                if j == 1:
-                    print "\\columnbreak"
-                if re.search(r"\%*answer",cc,re.I) or re.search(r"\%*correct",cc,re.I):
-                    print '%%%%%%%%%', 'ABCDE'[chran[0]],'ABCDE'[j], "is the correct answer !!!!!!!!!"
-                    ans_key[qno] = ['ABCDE'[xx] for xx in chran]
+    ss = re.subn(r'\n\s*%.*?\n','\n',ques.read())[0]
 
-            print '%%%%%%%%% Ending choices %%%%%%%%%%%'
-            print x
-            ch=False
-        elif ch:
-            choice.append(lx)
-        else:
-            print x
-    sys.stdout = sys.__stdout__
     ques.close()
+    ## Done with the file.
+
+    bb = re.search(r'{enumerate}((.|\n)+?)\\end{enumerate}',ss);
+    if bb:
+        ans=[]
+        st = []
+        ill = re.split(r'(\\item\b)',bb.groups()[0])
+
+        istart = ill.index('\\item')
+
+        iill = ill[istart:]
+        ch = [''.join(iill[i:i+2]).strip() for i in range(0,len(iill),2)]
+        for k,l in enumerate(ch):
+            if re.search(r'%[%\s]*stick',l,re.IGNORECASE):
+                st.append(k)
+            ch[k] += ' % orig: '+str(k)
+        ch = sticky_shuffle(ch,st)
+        for k,l in enumerate(ch):
+    #         print l
+            if re.search(r'%[%\s]*(correct|answer)',l,re.IGNORECASE):
+                print "I found it at ", k
+                corr = k
+            rr=re.search(r'%[%\s]*orig: (\d+)',l)
+            if rr:
+                ans.append(int(rr.groups()[0]))
+    else:
+        print "Nope! No choices found."
+        return ans_key
+    if ans:
+        print ans
+        outs = "{enumerate}" + ''.join(ill[:istart]).strip() \
+                + '\n\t%%%%% Starting Choices \n\t' \
+                + '\n\t'.join(ch)+"\n\t\\end{enumerate}\n"
+        fout.write(re.sub(r'{enumerate}((.|\n)+?)\\end{enumerate}',outs,ss))
+
+                    # ans_key[qno] = ['ABCDE'[xx] for xx in chran]
+
+    aout = ['']*len(ans)
+    for k,v in enumerate(ans):
+        aout[v] = a2z[k]
+    
+    ans_key[qno] = aout
     return ans_key
+
