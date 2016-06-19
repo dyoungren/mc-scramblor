@@ -48,7 +48,7 @@ ans_key={}
 # rr=[]
 
 for fin in args.file:
-    ans_key = qproc(fin,args,ans_key)
+    ans_key = qproc(fin,args,ans_key,pdir)
 
 print ans_key
 
