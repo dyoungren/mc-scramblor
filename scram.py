@@ -1,4 +1,4 @@
-#! /bin/env python
+#! /usr/bin/env python
 
 import sys, os, random, re
 
@@ -52,7 +52,8 @@ for fin in args.file:
 
 print ans_key
 
-rr = range(1,len(args.file)+1)
+# rr = range(1,len(args.file)+1)
+rr = ans_key.keys()
 
 if ver != 'un':
     random.shuffle(rr)
@@ -65,15 +66,17 @@ else:
     ansfile = sys.stdout
     mast = sys.stdout
 
-for n in rr:
-    ansfile.write('\t'.join([str(n)]+ans_key['mc%.2d'% (n,)])+'\n')
+# for n in rr:
+    # ansfile.write('\t'.join([str(n)]+ans_key['mc%.2d'% (n,)])+'\n')
+
 
 ansfile.write('\n\n')
 
 for m,n in enumerate(rr):
-    # print m,n
+    print m,n
     # ansfile.write('MC%d\tmc%.2da\t%s\n' % (m+1,n,'ABCDE'[ans_key['mc%.2d'% (n,)]]))
-    mast.write('\\vbox{\\input{mc%s/mc%.2d.tex}}\n' % (ver.lower(),n))
+    ansfile.write('\t'.join([str(m+1)]+ans_key[n])+'\n')
+    mast.write('\\vbox{\\input{mc%s/mc%.2d.tex}}\n' % (ver.lower(),m+1))
 
 
 ansfile.close()
