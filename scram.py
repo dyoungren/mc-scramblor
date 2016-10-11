@@ -76,7 +76,7 @@ for m,n in enumerate(rr):
     print m,n
     # ansfile.write('MC%d\tmc%.2da\t%s\n' % (m+1,n,'ABCDE'[ans_key['mc%.2d'% (n,)]]))
     ansfile.write('\t'.join([str(m+1)]+ans_key[n])+'\n')
-    mast.write('\\vbox{\\input{mc%s/mc%.2d.tex}}\n' % (ver.lower(),m+1))
+    mast.write('\\vbox{\\input{mc%s/%s.tex}}\n' % (ver.lower(),n))
 
 
 ansfile.close()
