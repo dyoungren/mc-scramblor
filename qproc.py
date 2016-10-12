@@ -40,6 +40,7 @@ def qproc(fin,args,ans_key,pdir='.'):
     if bb:
         ans=[]
         st = []
+        # print bb.groups()
         ill = re.split(r'(\\item\b)',bb.groups()[0])
 
         istart = ill.index('\\item')
@@ -67,7 +68,7 @@ def qproc(fin,args,ans_key,pdir='.'):
         outs = "{enumerate}" + ''.join(ill[:istart]).strip() \
                 + '\n\t%%%%% Starting Choices \n\t' \
                 + '\n\t'.join(ch)+"\n\t\\end{enumerate}\n"
-        fout.write(re.sub(r'{enumerate}((.|\n)+?)\\end{enumerate}',outs,ss))
+        fout.write(re.sub(r'{enumerate}((.|\n)+?)\\end{enumerate}',lambda x: outs,ss))
 
                     # ans_key[qno] = ['ABCDE'[xx] for xx in chran]
 
