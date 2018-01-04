@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
-import sys, os, random, re
+import sys, os, random
+# import re
 
 import argparse
 
@@ -40,20 +41,22 @@ pdir = 'mc'+ver.lower()
 if go:
     try:
         os.mkdir(pdir)
-    except:
+    except IOError:
         pass
+
 
 ans_key={}
 
 # rr=[]
 
 for fin in args.file:
-    ans_key = qproc(fin,args,ans_key,pdir)
+    ans_key = qproc(fin, args, ans_key, pdir)
 
 print ans_key
 
 # rr = range(1,len(args.file)+1)
 rr = ans_key.keys()
+rr.sort()
 
 if ver != 'un':
     random.shuffle(rr)
