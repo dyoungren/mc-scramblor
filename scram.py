@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+from __future__ import print_function
 import sys, os, random
 # import re
 
@@ -24,7 +24,7 @@ argparser.add_argument('--vers',help='what to call this version (default is \'un
                     action='store',default='un')
 args = argparser.parse_args()
 
-print args
+print(args)
 
 if args.iact:
     ver = raw_input("What version (\'un\' for unscrambled)? ")
@@ -52,7 +52,7 @@ ans_key={}
 for fin in args.file:
     ans_key = qproc(fin, args, ans_key, pdir)
 
-print ans_key
+print( ans_key)
 
 # rr = range(1,len(args.file)+1)
 rr = ans_key.keys()
@@ -76,7 +76,7 @@ else:
 ansfile.write('\n\n')
 
 for m,n in enumerate(rr):
-    print m,n
+    print(m,n)
     # ansfile.write('MC%d\tmc%.2da\t%s\n' % (m+1,n,'ABCDE'[ans_key['mc%.2d'% (n,)]]))
     ansfile.write('\t'.join([str(m+1)]+ans_key[n])+'\n')
     mast.write('\\vbox{\\input{mc%s/%s.tex}}\n' % (ver.lower(),n))

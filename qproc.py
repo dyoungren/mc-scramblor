@@ -4,19 +4,19 @@ import re
 import sys
 import random
 
-def sticky_shuffle(ll, st):
+def sticky_shuffle(choice_list, sticky_list):
     """Shuffles list of items, leaving those marked '% sticky' in place."""
-    ll = list(ll)
-    st.sort()
+    choice_list = list(choice_list)
+    sticky_list.sort()
     hh = []
     ct = 0
-    for x in st:
-        hh.append(ll.pop(x-ct))
+    for x in sticky_list:
+        hh.append(choice_list.pop(x-ct))
         ct += 1
-    random.shuffle(ll)
-    for x, y in zip(hh, st):
-        ll.insert(y, x)
-    return ll
+    random.shuffle(choice_list)
+    for x, y in zip(hh, sticky_list):
+        choice_list.insert(y, x)
+    return choice_list
 
 def qproc(fin, args, ans_key, pdir='.'):
     """
@@ -26,7 +26,7 @@ def qproc(fin, args, ans_key, pdir='.'):
     try:
         ques = open(fin, 'r')
     except IOError:
-        print "File %s not found." % (fin,)
+        print ("File %s not found." % (fin,))
         sys.exit()
 
     qno = ''.join(ques.name.split('.')[:-1]).split('/')[-1]
@@ -49,7 +49,7 @@ def qproc(fin, args, ans_key, pdir='.'):
     if bb:
         ans = []
         st = []
-        # print bb.groups()
+        # print (bb.groups())
         ill = re.split(r'(\\item\b)', bb.groups()[0])
 
         istart = ill.index('\\item')
@@ -62,18 +62,18 @@ def qproc(fin, args, ans_key, pdir='.'):
             ch[k] += ' % orig: '+str(k)
         ch = sticky_shuffle(ch, st)
         for k, l in enumerate(ch):
-    #         print l
+    #         print( l)
             if re.search(r'%[%\s]*(correct|answer)', l, re.IGNORECASE):
-                print "I found it at ", k
+                print ("I found it at ", k)
                 corr = k
             rr = re.search(r'%[%\s]*orig: (\d+)', l)
             if rr:
                 ans.append(int(rr.groups()[0]))
     else:
-        print "Nope! No choices found."
+        print ("Nope! No choices found.")
         return ans_key
     if ans:
-        print ans
+        print (ans)
         outs = "{enumerate}" + ''.join(ill[:istart]).strip() \
                 + '\n\t%%%%% Starting Choices \n\t' \
                 + '\n\t'.join(ch)+"\n\t\\end{enumerate}\n"
