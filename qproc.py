@@ -4,17 +4,17 @@ import re
 import sys
 import random
 
-def sticky_shuffle(choice_list, sticky_list):
-    """Shuffles list of items, leaving those marked '% sticky' in place."""
-    choice_list = list(choice_list)
-    sticky_list.sort()
-    hh = []
+def sticky_shuffle(choice_list, sticky_positions):
+    """Shuffles list of items, leaving those marked in sticky_positions in place."""
+    choice_list = list(choice_list) # In case I pass it a something immutable.
+    sticky_positions.sort()
+    sticky_holder = []
     ct = 0
-    for x in sticky_list:
-        hh.append(choice_list.pop(x-ct))
+    for pos in sticky_positions:
+        sticky_holder.append(choice_list.pop(pos-ct))
         ct += 1
     random.shuffle(choice_list)
-    for x, y in zip(hh, sticky_list):
+    for x, y in zip(sticky_holder, sticky_positions):
         choice_list.insert(y, x)
     return choice_list
 
