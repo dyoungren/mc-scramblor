@@ -1,6 +1,6 @@
 # mc-scramblor
 
-This is a simple python script for making different versions of a multiple-choice exam in LaTeX.
+This is a simple python script for making different versions of a multiple-choice exams in LaTeX.
 
 ```
 usage: scram.py [-h] [-i] [--save] [--vers VERS] filename [filename ...]
