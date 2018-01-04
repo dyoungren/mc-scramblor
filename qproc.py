@@ -7,13 +7,13 @@ import random
 def sticky_shuffle(choice_list, sticky_positions):
     """Shuffles list of items, leaving those marked in sticky_positions in place."""
     n = len(choice_list)
-    m = len(sticky_positions) # no. of fixed positions
+    # m = len(sticky_positions) # no. of fixed positions
 
     sticky_positions.sort()
 
     sticky_holder = [choice_list[i] for i in sticky_positions]
     loosey_holder = [choice_list[i] for i in range(n) if i not in sticky_positions]
-    
+
     random.shuffle(loosey_holder)
     out = ['']*n
     for i in range(n):
@@ -31,7 +31,7 @@ def qproc(fin, args, ans_key, pdir='.'):
     try:
         ques = open(fin, 'r')
     except IOError:
-        print ("File %s not found." % (fin,))
+        print("File %s not found." % (fin,))
         sys.exit()
 
     qno = ''.join(ques.name.split('.')[:-1]).split('/')[-1]
@@ -69,16 +69,16 @@ def qproc(fin, args, ans_key, pdir='.'):
         for k, l in enumerate(ch):
     #         print( l)
             if re.search(r'%[%\s]*(correct|answer)', l, re.IGNORECASE):
-                print ("I found it at ", k)
+                print("I found it at ", k)
                 corr = k
             rr = re.search(r'%[%\s]*orig: (\d+)', l)
             if rr:
                 ans.append(int(rr.groups()[0]))
     else:
-        print ("Nope! No choices found.")
+        print("Nope! No choices found.")
         return ans_key
     if ans:
-        print (ans)
+        print(ans)
         outs = "{enumerate}" + ''.join(ill[:istart]).strip() \
                 + '\n\t%%%%% Starting Choices \n\t' \
                 + '\n\t'.join(ch)+"\n\t\\end{enumerate}\n"
@@ -88,8 +88,7 @@ def qproc(fin, args, ans_key, pdir='.'):
 
     aout = ['']*len(ans)
     for k, val in enumerate(ans):
-        aout[val] = (corr == k) and a2z[k].upper() or a2z[k].lower()
+        aout[val] = a2z[k].upper() if (corr == k) else a2z[k].lower()
 
     ans_key[qno] = aout
     return ans_key
-
