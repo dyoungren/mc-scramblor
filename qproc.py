@@ -6,17 +6,22 @@ import random
 
 def sticky_shuffle(choice_list, sticky_positions):
     """Shuffles list of items, leaving those marked in sticky_positions in place."""
-    choice_list = list(choice_list) # In case I pass it a something immutable.
+    n = len(choice_list)
+    m = len(sticky_positions) # no. of fixed positions
+
     sticky_positions.sort()
-    sticky_holder = []
-    ct = 0
-    for pos in sticky_positions:
-        sticky_holder.append(choice_list.pop(pos-ct))
-        ct += 1
-    random.shuffle(choice_list)
-    for x, y in zip(sticky_holder, sticky_positions):
-        choice_list.insert(y, x)
-    return choice_list
+
+    sticky_holder = [choice_list[i] for i in sticky_positions]
+    loosey_holder = [choice_list[i] for i in range(n) if i not in sticky_positions]
+    
+    random.shuffle(loosey_holder)
+    out = ['']*n
+    for i in range(n):
+        if i in sticky_positions:
+            out[i] = sticky_holder.pop(0)
+        else:
+            out[i] = loosey_holder.pop(0)
+    return out
 
 def qproc(fin, args, ans_key, pdir='.'):
     """

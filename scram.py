@@ -52,10 +52,10 @@ ans_key={}
 for fin in args.file:
     ans_key = qproc(fin, args, ans_key, pdir)
 
-print( ans_key)
+print(ans_key)
 
 # rr = range(1,len(args.file)+1)
-rr = ans_key.keys()
+rr = list(ans_key.keys())
 rr.sort()
 
 if ver != 'un':
