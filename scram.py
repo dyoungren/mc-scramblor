@@ -38,9 +38,6 @@ def main():
 
     pdir = 'mc'+ver.lower()
 
-
-
-
     if go:
         try:
             os.mkdir(pdir)
@@ -66,7 +63,7 @@ def main():
         random.shuffle(rr)
 
     if go:
-        ansfile = open(pdir+'/answer_key_'+ver, 'w')
+        ansfile = open(pdir+'/answer_key.tsv', 'w')
         mast = open(pdir+'/mcmaster.tex', 'w')
     else:
         ansfile = sys.stdout
