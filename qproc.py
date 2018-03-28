@@ -82,8 +82,10 @@ def qproc(filename, args, ans_key, pdir='.'):
             if rr:
                 ans.append(int(rr.groups()[0]))
         if colbreak:
-            print("Breaking cols in question",qno)
-            ch[2] = ch[2] + '\n\\columnbreak\n'
+            numch = len(ch)
+            mid = numch // 2 if numch % 2 else numch//2 - 1
+            print("Breaking cols in question",qno,mid)
+            ch[mid] = ch[mid] + '\n\\columnbreak\n'
     else:
         print("Nope! No choices found.")
         return ans_key
