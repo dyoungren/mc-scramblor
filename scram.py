@@ -38,6 +38,13 @@ def main():
 
     pdir = 'mc'+ver.lower()
 
+    # set random seed to version
+
+    seed_hash = 14
+    for i,c in enumerate(ver):
+        seed_hash += 100**(i % 6) * ord(c)
+    random.seed(seed_hash)
+
     if go:
         try:
             os.mkdir(pdir)
