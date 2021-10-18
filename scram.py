@@ -46,11 +46,11 @@ def main():
     random.seed(seed_hash)
 
     if go:
-        try:
-            os.mkdir(pdir)
-        except IOError:
-            pass
-
+        if not os.path.isdir(pdir):
+            try:
+                os.mkdir(pdir)
+            except IOError:
+                pass
 
     ans_key = {}
 
