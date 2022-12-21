@@ -52,7 +52,6 @@ def main():
             except IOError:
                 pass
 
-
     ans_key = {}
 
     # rr=[]
