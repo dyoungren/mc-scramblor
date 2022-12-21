@@ -23,8 +23,8 @@ def main():
                         action='store_true', dest='iact', default=False)
     parser.add_argument('--save', help='actually produce output',
                         action='store_true', dest='go')
-    parser.add_argument('--vers', help='what to call this version (default is \'un\'scrambled)',
-                        action='store', default='un')
+    parser.add_argument('--vers', help='what to call this version (default is \'un\'scrambled)', action='store', default='un')
+    parser.add_argument('--soln', help='add solution tag (checkmark) to correct choices', action='store_true', dest='soln')
     args = parser.parse_args()
 
     print(args)
@@ -46,10 +46,11 @@ def main():
     random.seed(seed_hash)
 
     if go:
-        try:
-            os.mkdir(pdir)
-        except IOError:
-            pass
+        if not os.path.isdir(pdir):
+            try:
+                os.mkdir(pdir)
+            except IOError:
+                pass
 
 
     ans_key = {}
@@ -57,7 +58,7 @@ def main():
     # rr=[]
 
     for fin in args.file:
-        ans_key = qproc(fin, args, ans_key, pdir)
+        ans_key = qproc(fin, args, ans_key, pdir, args.soln)
 
     print(ans_key)
 

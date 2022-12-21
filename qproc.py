@@ -23,10 +23,11 @@ def sticky_shuffle(choice_list, sticky_positions):
             out[i] = loosey_holder.pop(0)
     return out
 
-def qproc(filename, args, ans_key, pdir='.'):
+def qproc(filename, args, ans_key, pdir='.', soln=False):
     """
     Reads a .tex file (see mc-template.tex) shuffling choices and finding
     correct answer for answer key.
+    soln flag marks correct choices with a checkmark (needs xcolor).
     """
     try:
         ques = open(filename, 'r')
@@ -77,6 +78,8 @@ def qproc(filename, args, ans_key, pdir='.'):
     #         print( l)
             if re.search(r'%[%\s]*(correct|answer)', l, re.IGNORECASE):
                 print("I found it at ", k)
+                if soln:
+                    ch[k] = l + "\n" + r" {\color{red} \huge \checkmark} "
                 corr = k
             rr = re.search(r'%[%\s]*orig: (\d+)', l)
             if rr:
